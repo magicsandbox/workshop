@@ -1,0 +1,53 @@
+podTemplate(label: 'jenkins-worker-hello-world', yaml: """
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    whois: jenkins-worker
+spec:
+  containers:
+  - name: builder
+    image: golang:alpine
+    command:
+    - cat
+    tty: true
+    resources:
+        requests:
+            memory: 512Mi
+            cpu: "300m"
+        limits:
+            memory: 512Mi
+            cpu: "300m"
+  - name: kaniko
+    image: msbcom/kaniko:latest
+    command:
+    - cat
+    tty: true
+    resources:
+        requests:
+            memory: 256Mi
+            cpu: "200m"
+        limits:
+            memory: 512Mi
+            cpu: "300m"
+""")
+{
+    node('jenkins-worker-hello-world') {
+        checkout scm
+        stage('Test and build') {
+            container('builder') {
+                sh """
+                    GOARCH=amd64 GOOS=linux go build -o app .
+                """
+            }
+        }
+
+        stage('Build and push docker image') {
+            container('kaniko') {
+                sh """
+                    /kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --destination=docker-registry.default:5000/msb/hello-world:v1
+                """
+            }
+        }
+    }
+}

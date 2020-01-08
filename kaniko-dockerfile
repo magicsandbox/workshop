@@ -1,0 +1,16 @@
+
+# msbcom/kaniko:latest
+
+FROM gcr.io/kaniko-project/executor:debug AS kaniko
+
+FROM alpine
+COPY --from=kaniko /kaniko /kaniko
+
+ENV HOME /root
+ENV USER /root
+ENV PATH /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/kaniko
+ENV SSL_CERT_DIR=/kaniko/ssl/certs
+ENV DOCKER_CONFIG /kaniko/.docker/
+ENV DOCKER_CREDENTIAL_GCR_CONFIG /kaniko/.config/gcloud/docker_credential_gcr_config.json
+RUN apk add --no-cache ca-certificates && docker-credential-gcr config --token-source=env
+ENTRYPOINT ["/kaniko/executor"]
