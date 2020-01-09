@@ -41,7 +41,6 @@ spec:
         items:
         - key: .dockerconfigjson
           path: config.json
-  /kaniko/.docker/config.json
 """)
 {
     node('jenkins-worker-hello-world') {

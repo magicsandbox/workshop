@@ -30,10 +30,10 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 
   ##tls support for the ingress
-  #tls:
-  #  - secretName: <TLS_SECRET>
-  #    hosts:
-  #      - 'git.example.com'
+  tls:
+   - secretName: git-workshop-msb-com
+     hosts:
+       - 'git.workshop.msb.com'
 
 ## chart defaults to using an ingress for http, but change to LoadBalancer if using you cluster supports it
 service:
