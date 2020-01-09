@@ -3,7 +3,7 @@
 ##
 
 images:
-  gitea: "gitea/gitea:1.10.3"
+  gitea: "gitea/gitea:1.10.2"
   postgres: "postgres:11"
   memcached: "memcached:1.5.19-alpine"
   imagePullPolicy: Always
@@ -27,6 +27,7 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 
   ##tls support for the ingress
   #tls:
@@ -108,12 +109,12 @@ persistence:
 #      path: giteaPostgresData
 
 #Connect to an external database
-# externalDB:
-#   dbUser: "postgres"
-#   dbPassword: "<MY_PASSWORD>"
-#   dbHost: "service-name.namespace.svc.cluster.local" # or some external host
-#   dbPort: "5432"
-#   dbDatabase: "gitea"
+externalDB:
+  dbUser: "gitea"
+  dbPassword: "gitea1234"
+  dbHost: "postgresql.default"
+  dbPort: "5432"
+  dbDatabase: "gitea"
 
 # valid types: postgres, mysql, mssql, sqllite
 dbType: "postgres"

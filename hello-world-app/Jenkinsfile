@@ -23,13 +23,25 @@ spec:
     command:
     - cat
     tty: true
+    volumeMounts:
+    - name: regcred
+      mountPath: "/kaniko/.docker"
+      readOnly: true
     resources:
         requests:
             memory: 256Mi
-            cpu: "200m"
+            cpu: "500m"
         limits:
             memory: 512Mi
-            cpu: "300m"
+            cpu: "1000m"
+  volumes:
+  - name: regcred
+    secret:
+        name: regcred
+        items:
+        - key: .dockerconfigjson
+          path: config.json
+  /kaniko/.docker/config.json
 """)
 {
     node('jenkins-worker-hello-world') {

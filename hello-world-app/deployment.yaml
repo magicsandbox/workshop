@@ -49,7 +49,9 @@ spec:
     spec:
       containers:
         - name: balancer
-          image: registry:5000/ci-cd/hello-world:v1 # replace
+          image: registry.workshop.msb.com/msb/hello-world:v1
+          imagePullSecrets:
+            - name: regcred
           imagePullPolicy: IfNotPresent
           env:
             - name: FOR_GODS_SAKE_PLEASE_REDEPLOY

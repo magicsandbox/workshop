@@ -1,0 +1,44 @@
+{
+    "Comment": "workshop",
+    "Changes": [
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "git.workshop.msb.com",
+                "Type": "A",
+                "TTL": 60,
+                "ResourceRecords": [
+                    {
+                        "Value": "35.204.232.242"
+                    }
+                ]                
+            }
+        },
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "jenkins.workshop.msb.com",
+                "Type": "A",
+                "TTL": 60,
+                "ResourceRecords": [
+                    {
+                        "Value": "35.204.232.242"
+                    }
+                ]                
+            }
+        },
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "registry.workshop.msb.com",
+                "Type": "A",
+                "TTL": 60,
+                "ResourceRecords": [
+                    {
+                        "Value": "35.204.232.242"
+                    }
+                ]                
+            }
+        }
+    ]
+}
