@@ -9,7 +9,7 @@
                 "TTL": 60,
                 "ResourceRecords": [
                     {
-                        "Value": "35.204.232.242"
+                        "Value": "34.90.234.159"
                     }
                 ]                
             }
@@ -22,7 +22,7 @@
                 "TTL": 60,
                 "ResourceRecords": [
                     {
-                        "Value": "35.204.232.242"
+                        "Value": "34.90.234.159"
                     }
                 ]                
             }
@@ -35,7 +35,20 @@
                 "TTL": 60,
                 "ResourceRecords": [
                     {
-                        "Value": "35.204.232.242"
+                        "Value": "34.90.234.159"
+                    }
+                ]                
+            }
+        },
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "hello-world.workshop.msb.com",
+                "Type": "A",
+                "TTL": 60,
+                "ResourceRecords": [
+                    {
+                        "Value": "34.90.234.159"
                     }
                 ]                
             }

@@ -5,6 +5,14 @@ metadata:
   labels:
     whois: jenkins-worker
 spec:
+  serviceAccountName: build-robot
+  volumes:
+    - name: cred
+      secret:
+        secretName: regcred
+        items:
+        - key: .dockerconfigjson
+          path: config.json
   containers:
   - name: builder
     image: golang:alpine
@@ -20,13 +28,13 @@ spec:
             cpu: "300m"
   - name: kaniko
     image: msbcom/kaniko:latest
+    volumeMounts:
+    - name: cred
+      mountPath: "/kaniko/.docker"
+      readOnly: true
     command:
     - cat
     tty: true
-    volumeMounts:
-    - name: regcred
-      mountPath: "/kaniko/.docker"
-      readOnly: true
     resources:
         requests:
             memory: 256Mi
@@ -34,13 +42,18 @@ spec:
         limits:
             memory: 512Mi
             cpu: "1000m"
-  volumes:
-  - name: regcred
-    secret:
-        name: regcred
-        items:
-        - key: .dockerconfigjson
-          path: config.json
+  - name: kubectl
+    image: lachlanevenson/k8s-kubectl:v1.15.4
+    command:
+    - cat
+    tty: true
+    resources:
+        requests:
+            memory: 256Mi
+            cpu: "200m"
+        limits:
+            memory: 512Mi
+            cpu: "300m"
 """)
 {
     node('jenkins-worker-hello-world') {
@@ -48,7 +61,35 @@ spec:
         stage('Test and build') {
             container('builder') {
                 sh """
-                    GOARCH=amd64 GOOS=linux go build -o app .
+                    apk update && apk add perl git
+                    git describe --always > commit_sha
+                    git --no-pager show -s --format=\"%an\" `cat commit_sha` > commit_author
+                    git --no-pager log -n 1 --format=\"%s\" `cat commit_sha` > commit_msg
+                    git log --oneline -n 1 > commit_message
+
+                    case "`cat commit_message`" in
+                        *"[skip ci]"*)  echo 'True' > skip_ci;;
+                        *)              echo 'False' ;;
+                    esac
+
+                    # build
+                    if [ ! -f skip_ci ]; then
+                        # run tests
+                        if [ `go fmt | wc -l` -gt 0 ]; then
+                            # send notification
+                            echo "go fmt error";
+                            exit 1;
+                        fi
+
+                        if [ "$BRANCH_NAME" == "production" ]; then
+                            # bumping version
+                            perl -i -pe 's/\\d+\\.\\d+\\.\\K(\\d+)/\$1+1/e' main.go
+                        fi
+
+                        grep -Eo "version = \\"[0-9]+.[0-9]+.[0-9]+\\"" main.go | grep -Eo "[0-9]+\\.[0-9]+\\.[0-9]+" | head -n 1 > next_version
+                    else
+                        echo "Skipping build..."
+                    fi
                 """
             }
         }
@@ -56,8 +97,42 @@ spec:
         stage('Build and push docker image') {
             container('kaniko') {
                 sh """
-                    /kaniko/executor -f `pwd`/Dockerfile -c `pwd` --insecure --skip-tls-verify --destination=docker-registry.default:5000/msb/hello-world:v1
+                    if [ ! -f skip_ci ]; then
+                        /kaniko/executor -f `pwd`/dockerfile -c `pwd` --destination=registry.workshop.msb.com/msb/hello-world:`cat next_version`
+                    fi
                 """
+            }
+        }
+
+        stage('Deploy') {
+            container('kubectl') {
+                withCredentials([[$class: 'UsernamePasswordMultiBinding',
+                    credentialsId: 'jenkins',
+                    usernameVariable: 'G_USER',
+                    passwordVariable: 'G_PWD']]) {
+
+                    sh """
+                        if [ ! -f skip_ci ]; then
+                            apk update && apk add ca-certificates git
+                            
+                            if [ "$BRANCH_NAME" == "production" ]; then
+                                echo "Deploying `cat next_version` to production"
+                                sed -i'' -e "s@hello-world:.*@hello-world:`cat next_version`@" deployment.yaml
+                                kubectl apply -f deployment.yaml
+
+                                if ! kubectl rollout status deploy/hello-world; then
+                                    kubectl rollout undo deploy/hello-world
+                                fi
+                                git remote remove origin && git remote add origin https://$G_USER:$G_PWD@git.workshop.msb.com/msb/hello-world.git
+                                git config --global user.name "Release Man" && git config --global user.email "jenkins@msb.com"
+                                git fetch && git checkout master && git add main.go deployment.yaml && git commit -m "[skip ci] `cat next_version` release"
+                                git push origin master
+                            fi
+                        else
+                            echo "Skipping build..."
+                        fi
+                    """
+                }
             }
         }
     }

@@ -5,15 +5,20 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-    - host: hello-world.ci-cd.example # replace
+    - host: hello-world.workshop.msb.com
       http:
         paths:
           - path: /
             backend:
               serviceName: hello-world
               servicePort: http
+  tls:
+  - hosts:
+    - hello-world.workshop.msb.com
+    secretName: hello-world-workshop-msb-com
 ---
 apiVersion: v1
 kind: Service
@@ -47,11 +52,11 @@ spec:
       labels:
         app: hello-world
     spec:
+      imagePullSecrets:
+        - name: regcred
       containers:
-        - name: balancer
-          image: registry.workshop.msb.com/msb/hello-world:v1
-          imagePullSecrets:
-            - name: regcred
+        - name: hello-world
+          image: registry.workshop.msb.com/msb/hello-world:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: FOR_GODS_SAKE_PLEASE_REDEPLOY
