@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: init-in-action
+  labels:
+    app: two-containers
+spec:
+  containers:
+  - name: app-container
+    image: busybox:1.28
+    command: ['sh', '-c', 'echo The app is running! && sleep 3600']
+  initContainers:
+  - name: init-service
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup some-service; do echo waiting for myservice; sleep 2; done;']
+  - name: init-db-service
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup some-db-service; do echo waiting for mydb; sleep 2; done;']
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+spec:
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  selector:
+    app: two-containers
