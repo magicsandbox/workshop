@@ -41,7 +41,9 @@ Let's terminate current deployment: `helm del --purge pg`
 
 ## Running Stolon PostgreSQL
 
-1) Create secrets for PostgreSQL superuser and replication: `kubectl create secret generic pg-su --from-literal=username='su_username' --from-literal=password='su_password'`, `kubectl create secret generic pg-repl --from-literal=username='repl_username' --from-literal=password='repl_password'`
+We will use the next credentials for the pg superuser: `user: su_username, password: su_password`
+
+1) Create secrets for PostgreSQL superuser and replication: `kubectl apply -f pg-creds.yaml`
 2) Deploy: `helm install --name stolon -f stolon-prod-values.yaml stable/stolon`. In a few minutes HA PSQL cluster will be up.
 3) Check cluster: `kubectl get all`.
 4) To check whois master and check status of the cluster execute: `kubectl exec -it stolon-keeper-0 -- bash -c "stolonctl status --cluster-name stolon --store-backend=kubernetes --kube-resource-kind=configmap"`
