@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
   - name: web
-    port: 5601
+    port: 443
     targetPort: 5601
   selector:
     common.k8s.elastic.co/type: kibana
