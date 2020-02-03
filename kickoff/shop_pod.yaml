@@ -6,6 +6,15 @@ metadata:
     app: marketplace
 spec:
   containers:
+    - name: database
+      image: postgres:11.6-alpine
+      env:
+        - name: POSTGRES_USER
+          value: saleor
+        - name: POSTGRES_PASSWORD
+          value: saleor
+        - name: POSTGRES_DB
+          value: saleor
     - name: webapp
       image: magicsandbox/saleor:latest
       env:
@@ -17,18 +26,9 @@ spec:
           value: "8000"
         - name: ALLOWED_HOSTS
           value: "*"
-      # lifecycle:
-      #   postStart:
-      #     exec:
-      #       command: ["python", "manage.py", "migrate"]
+      lifecycle:
+        postStart:
+          exec:
+            command: ["python", "manage.py", "migrate"]
       ports:
         - containerPort: 8000
-    - name: database
-      image: postgres:11.6-alpine
-      env:
-        - name: POSTGRES_USER
-          value: saleor
-        - name: POSTGRES_PASSWORD
-          value: saleor
-        - name: POSTGRES_DB
-          value: saleor
