@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  labels:
+    app: postgres
+data:
+  POSTGRES_DB: saleor
+  POSTGRES_USER: saleor
+  POSTGRES_PASSWORD: saleor
+  POSTGRES_URL: postgres://saleor:saleor@postgres:5432/saleor

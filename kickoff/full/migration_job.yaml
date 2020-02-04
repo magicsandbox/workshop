@@ -1,0 +1,25 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db_migrate
+spec:
+  template:
+    spec:
+      containers:
+        - name: webapp
+          image: magicsandbox/saleor:latest
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  value: POSTGRES_URL
+            - name: SECRET_KEY
+              value: dummy
+            - name: PORT
+              value: "8000"
+            - name: ALLOWED_HOSTS
+              value: "*"
+          command: ["python", "manage.py", "migrate"]
+      restartPolicy: Never
+  backoffLimit: 4

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storefront
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: storefront
+  template:
+    metadata:
+      labels:
+        app: storefront
+    spec:
+      containers:
+        - name: webapp
+          image: magicsandbox/saleor-storefront:latest
+          env:
+            - name: API_URI
+              value: /graphql/
+          ports:
+            - containerPort: 80

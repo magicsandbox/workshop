@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  replicas: 1
+  template:
+    metadata:
+      name: saleor
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: webapp
+          image: magicsandbox/saleor:latest
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: postgres-config
+                  key: POSTGRES_URL
+            - name: SECRET_KEY
+              value: dummy
+            - name: PORT
+              value: "8000"
+            - name: ALLOWED_HOSTS
+              value: "*"
+          ports:
+            - containerPort: 8000
+    
