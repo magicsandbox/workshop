@@ -72,6 +72,12 @@ Open `https://KIBANA_IP` in your browser. Your browser will show a warning becau
 
 Login as the `elastic` user. The password can be obtained with the following command: `kubectl get secret elastic-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 -d; echo`
 
+## Ingest data
+
+We will use `filebeat` to push all the logs from containers to the elasticsearhc.
+
+To deploy daemonset execute `kubectl apply -f filebeat.yaml`. Then open Index patterns in kibana settings with using kibana ui and create index pattern with the name `filebeat-*`. After that you will able to see all the logs coming to elasticsearch from the containers (in Discover section of the kibana).
+
 ## Upgrade your deployment
 
 You can add and modify most elements of the original cluster specification provided that they translate to valid transformations of the underlying Kubernetes resources (e.g., existing volume claims cannot be resized). The operator will attempt to apply your changes with minimal disruption to the existing cluster. You should ensure that the Kubernetes cluster has sufficient resources to accommodate the changes (extra storage space, sufficient memory and CPU resources to temporarily spin up new pods etc.).
