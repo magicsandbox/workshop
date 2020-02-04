@@ -76,9 +76,9 @@ Login as the `elastic` user. The password can be obtained with the following com
 
 You can add and modify most elements of the original cluster specification provided that they translate to valid transformations of the underlying Kubernetes resources (e.g., existing volume claims cannot be resized). The operator will attempt to apply your changes with minimal disruption to the existing cluster. You should ensure that the Kubernetes cluster has sufficient resources to accommodate the changes (extra storage space, sufficient memory and CPU resources to temporarily spin up new pods etc.).
 
-Change the number of replicas in `elasticsearch.yaml` file from 1 to 3 and apply that file: `kubectl apply -f elasticsearch.yaml`
+Change the number of replicas in `elasticsearch.yaml` file from 1 to 2 and apply that file: `kubectl apply -f elasticsearch.yaml`
 
-Number of replicas should be increased from 1 to 3 (1 master and 2 workers).
+Number of replicas should be increased from 1 to 2 (1 master and 1 worker).
 
 ## Uninstalling ECK
 
