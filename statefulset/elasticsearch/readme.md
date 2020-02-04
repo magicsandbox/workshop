@@ -70,7 +70,7 @@ Wait until public ip will be assigned to the service: `kubectl apply get svc -w`
 
 Open `https://KIBANA_IP` in your browser. Your browser will show a warning because the self-signed certificate configured by default is not verified by a third party certificate authority and not trusted by your browser. You can temporarily acknowledge the warning for the purposes of this quick start but it is highly recommended that you configure valid certificates for any production deployments.
 
-Login as the `elastic` user. The password can be obtained with the following command: `kubectl get secret kb-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 --decode; echo`
+Login as the `elastic` user. The password can be obtained with the following command: `kubectl get secret elastic-es-elastic-user -o=jsonpath='{.data.elastic}' | base64 -d; echo`
 
 ## Upgrade your deployment
 
