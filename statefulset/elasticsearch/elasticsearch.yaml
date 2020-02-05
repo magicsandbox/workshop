@@ -14,18 +14,15 @@ spec:
       node.store.allow_mmap: false
     podTemplate:
       spec:
-        containers:
-        - name: elasticsearch
-          resources:
-            limits:
-              memory: 1500Mi
-              cpu: 500m
-            requests:
-              memory: 768Mi
-              cpu: 500m
-          env:
-          - name: ES_JAVA_OPTS
-            value: "-Xms1g -Xmx1g"
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: runtime
+                  operator: NotIn
+                  values:
+                  - master
     volumeClaimTemplates:
     - metadata:
         name: elasticsearch-data

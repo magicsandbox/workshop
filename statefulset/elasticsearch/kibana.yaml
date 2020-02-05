@@ -9,6 +9,15 @@ spec:
     name: elastic
   podTemplate:
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: runtime
+                operator: In
+                values:
+                - master
       containers:
       - name: kibana
         resources:

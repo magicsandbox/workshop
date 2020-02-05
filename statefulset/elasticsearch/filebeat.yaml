@@ -69,7 +69,7 @@ spec:
         ]
         env:
         - name: ELASTICSEARCH_HOST
-          value: elastic-es-http.default
+          value: https://elastic-es-http.default
         - name: ELASTICSEARCH_PORT
           value: "9200"
         - name: ELASTICSEARCH_USERNAME
