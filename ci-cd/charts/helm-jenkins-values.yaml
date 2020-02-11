@@ -215,6 +215,7 @@ master:
     - workflow-aggregator:2.6
     - credentials-binding:1.20
     - git:4.0.0
+    - gitea:1.1.2
 
   # Enable to always override the installed plugins with the values of 'master.installPlugins' on upgrade or redeployment.
   # overwritePlugins: true
