@@ -34,7 +34,10 @@ kubectl create serviceaccount build-robot && kubectl create clusterrolebinding b
 # docker-registry credentials
 kubectl apply -f regcred.yaml
 
+echo "Use http://$external_ip/git to access gitea and http://$external_ip/jenkins to access jenkins"
+
+# todo kaniko
 # kaniko
-cp -R ./files/kaniko/* /kaniko/
+# cp -R ./files/kaniko/* /kaniko/
 # cd PROJECT_DIR
 # /kaniko/executor -f `pwd`/dockerfile -c `pwd` --no-push --destination=registry.msb.com/msb/hello-world:1.0.0
