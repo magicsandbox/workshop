@@ -146,6 +146,8 @@ data:
     ROOT_URL = {{ .proto }}://{{ .Values.service.http.externalHost }}:{{ .Values.service.http.externalPort  }}/
     {{- else if .Values.service.http.externalHost }}
     ROOT_URL = {{ .proto }}://{{ .Values.service.http.externalHost }}/
+    {{- else if .Values.ingress.path }}
+    ROOT_URL = %(PROTOCOL)s://%(DOMAIN)s:%(HTTP_PORT)s/{{ .Values.ingress.path }}/
     {{- else }}
     ROOT_URL = %(PROTOCOL)s://%(DOMAIN)s:%(HTTP_PORT)s/
     {{- end -}}
