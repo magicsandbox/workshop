@@ -56,7 +56,7 @@ spec:
         - name: regcred
       containers:
         - name: hello-world
-          image: registry.workshop.msb.com/msb/hello-world:1.0.0
+          image: registry.msb.com/msb/hello-world:1.0.0
           imagePullPolicy: IfNotPresent
           env:
             - name: FOR_GODS_SAKE_PLEASE_REDEPLOY

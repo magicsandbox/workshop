@@ -98,7 +98,7 @@ spec:
             container('kaniko') {
                 sh """
                     if [ ! -f skip_ci ]; then
-                        /kaniko/executor -f `pwd`/dockerfile -c `pwd` --destination=registry.workshop.msb.com/msb/hello-world:`cat next_version`
+                        /kaniko/executor -f `pwd`/dockerfile -c `pwd` --destination=registry.msb.com/msb/hello-world:`cat next_version`
                     fi
                 """
             }
