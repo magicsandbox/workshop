@@ -167,7 +167,7 @@ podAnnotations: {}
 ## In order to disable initial install screen you must have secretKey and disableInstaller=true
 config:
 #  secretKey: define_your_secret
-  disableInstaller: false
+  disableInstaller: true
   offlineMode: false
   requireSignin: false
   disableRegistration: false
