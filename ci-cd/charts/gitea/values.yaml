@@ -27,13 +27,13 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-
+    # cert-manager.io/cluster-issuer: letsencrypt-prod
+  path: /git
   ##tls support for the ingress
-  tls:
-   - secretName: git-workshop-msb-com
-     hosts:
-       - 'git.workshop.msb.com'
+  #tls:
+  # - secretName: git-workshop-msb-com
+  #   hosts:
+  #     - 'git.workshop.msb.com'
 
 ## chart defaults to using an ingress for http, but change to LoadBalancer if using you cluster supports it
 service:
@@ -42,8 +42,8 @@ service:
     port: 3000
     #nodePort: 30280
     # sometimes if is necesary to access through an external port i.e. http(s)://<dns-name>:<external-port>
-    externalPort: 80
-    externalHost: git.workshop.msb.com
+    # externalPort: 80
+    # externalHost: git.workshop.msb.com
   ssh:
     serviceType: ClusterIP
     port: 22
