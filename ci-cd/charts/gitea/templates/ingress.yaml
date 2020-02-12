@@ -19,7 +19,7 @@ spec:
           serviceName: {{ template "fullname" . }}-http
           servicePort: {{ .Values.service.http.port }}
 {{- if .Values.ingress.path }}
-        path: {{ .Values.ingress.path }}/
+        path: {{ .Values.ingress.path }}
 {{- end -}}
 {{- if .Values.ingress.tls }}
   tls:
