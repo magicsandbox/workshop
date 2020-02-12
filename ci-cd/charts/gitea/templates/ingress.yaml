@@ -21,9 +21,6 @@ spec:
 {{- if .Values.ingress.path }}
         path: {{ .Values.ingress.path }}/
 {{- end -}}
-{{- if .Values.service.http.externalHost }}
-    host: {{ .Values.service.http.externalHost | quote }}
-{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
 {{ toYaml .Values.ingress.tls | indent 4 }}
