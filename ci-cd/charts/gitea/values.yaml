@@ -18,6 +18,8 @@ memcached:
   verbosity: v
   extendedOptions: modern
 
+urlPrefix: /git
+
 ## ingress settings - Optional
 ingress:
   enabled: true
@@ -27,8 +29,11 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-body-size: "0"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    nginx.ingress.kubernetes.io/rewrite-target: $1
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      rewrite ^(/git)$ $1/ redirect;
     # cert-manager.io/cluster-issuer: letsencrypt-prod
-  # path: /git
+  path: /git(.*)
   ##tls support for the ingress
   #tls:
   # - secretName: git-workshop-msb-com
