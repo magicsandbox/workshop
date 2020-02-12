@@ -17,7 +17,7 @@ while [[ $(kubectl get pods -l app.kubernetes.io/name=jenkins -o 'jsonpath={..st
 jenkins_pod=$(kubectl get pod -l app.kubernetes.io/name=jenkins -o jsonpath="{.items[0].metadata.name}")
 kubectl cp ./files/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml default/$jenkins_pod:/var/jenkins_home/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml
 kubectl exec $jenkins_pod -- chown -R root:root /var/jenkins_home/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml
-kubectl delete po $jenkins_pod
+#kubectl delete po $jenkins_pod
 echo "Jenkins has been initialized, waiting for readiness"
 while [[ $(kubectl get pods -l app.kubernetes.io/name=jenkins -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for jenkins" && sleep 2; done
 echo "Jenkins is ready to serve"
@@ -37,4 +37,4 @@ kubectl apply -f regcred.yaml
 # kaniko
 cp -R ./files/kaniko/* /kaniko/
 # cd PROJECT_DIR
-# /kaniko/executor -f `pwd`/dockerfile -c `pwd` --no-push --destination=registry.msb.com/theia:abc
+# /kaniko/executor -f `pwd`/dockerfile -c `pwd` --no-push --destination=registry.msb.com/msb/hello-world:1.0.0
