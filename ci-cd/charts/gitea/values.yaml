@@ -28,7 +28,7 @@ ingress:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
     # cert-manager.io/cluster-issuer: letsencrypt-prod
-  path: /git
+  # path: /git
   ##tls support for the ingress
   #tls:
   # - secretName: git-workshop-msb-com
