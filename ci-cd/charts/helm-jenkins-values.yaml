@@ -128,7 +128,7 @@ master:
   # jenkinsOpts: ""
   # jenkinsUrl: ""
   # If you set this prefix and use ingress controller then you might want to set the ingress path below
-  # jenkinsUriPrefix: "/jenkins"
+  jenkinsUriPrefix: "/jenkins"
   # Enable pod security context (must be `true` if runAsUser or fsGroup are set)
   usePodSecurityContext: true
   # Set runAsUser to 1000 to let Jenkins run as non-root user 'jenkins' which exists in 'jenkins/jenkins' docker image.
@@ -345,15 +345,15 @@ master:
     labels: {}
     annotations:
       kubernetes.io/ingress.class: nginx
-      cert-manager.io/cluster-issuer: letsencrypt-prod
+      # cert-manager.io/cluster-issuer: letsencrypt-prod
     # Set this path to jenkinsUriPrefix above or use annotations to rewrite path
-    # path: "/jenkins"
+    path: "/jenkins"
     # configures the hostname e.g. jenkins.example.com
-    hostName: jenkins.workshop.msb.com
-    tls:
-    - secretName: jenkins-workshop-msb-com
-      hosts:
-        - jenkins.workshop.msb.com
+    #hostName: jenkins.workshop.msb.com
+    #tls:
+    #- secretName: jenkins-workshop-msb-com
+    #  hosts:
+    #    - jenkins.workshop.msb.com
 
   # If you're running on GKE and need to configure a backendconfig
   # to finish ingress setup, use the following values.
