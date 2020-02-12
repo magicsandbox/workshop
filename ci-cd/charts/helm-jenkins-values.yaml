@@ -235,7 +235,7 @@ master:
   # Kubernetes secret that contains files to be put in the Jenkins 'secrets' directory,
   # useful to manage encryption keys used for credentials.xml for instance (such as
   # master.key and hudson.util.Secret)
-  # secretsFilesSecret: jenkins-secrets
+  secretsFilesSecret: jenkins-keys
   # Jenkins XML job configs to provision
   jobs:
     msb: |-

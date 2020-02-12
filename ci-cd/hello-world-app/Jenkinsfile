@@ -107,7 +107,7 @@ spec:
         stage('Deploy') {
             container('kubectl') {
                 withCredentials([[$class: 'UsernamePasswordMultiBinding',
-                    credentialsId: 'jenkins',
+                    credentialsId: 'gitea-jenkins',
                     usernameVariable: 'G_USER',
                     passwordVariable: 'G_PWD']]) {
 

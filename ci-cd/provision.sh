@@ -11,6 +11,7 @@ helm install --name postgresql --set postgresqlUsername=gitea,postgresqlPassword
 while [[ $(kubectl get pods postgresql-postgresql-0 -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for pg" && sleep 2; done
 
 # jenkins
+kubectl apply -f ./files/jenkins-secrets.yaml
 kubectl create secret generic j-cred --from-file=./files/credentials.xml
 helm install --name jenkins stable/jenkins -f charts/helm-jenkins-values.yaml
 while [[ $(kubectl get pods -l app.kubernetes.io/name=jenkins -o 'jsonpath={..status.conditions[?(@.type=="Initialized")].status}') != "True" ]]; do echo "waiting for jenkins" && sleep 2; done
