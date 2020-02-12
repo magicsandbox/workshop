@@ -33,6 +33,6 @@ kubectl create serviceaccount build-robot && kubectl create clusterrolebinding b
 kubectl apply -f regcred.yaml
 
 # kaniko
-cp -R ./files/kaniko /kaniko
+cp -R ./files/kaniko/* /kaniko/
 # cd PROJECT_DIR
 # /kaniko/executor -f `pwd`/dockerfile -c `pwd` --no-push --destination=registry.msb.com/theia:abc
