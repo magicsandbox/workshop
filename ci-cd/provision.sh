@@ -34,6 +34,6 @@ kubectl apply -f regcred.yaml
 sed -i "s@# externalHost: git.workshop.msb.com@externalHost: $external_ip@" ./charts/gitea/values.yaml
 helm install --name gitea charts/gitea
 
-while [[ $(kubectl get pods -l app: gitea-gitea -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for the gitea" && sleep 2; done
+while [[ $(kubectl get pods -l app=gitea-gitea -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for the gitea" && sleep 2; done
 
 echo "Use http://$external_ip/git to access gitea and http://$external_ip/jenkins to access jenkins"
