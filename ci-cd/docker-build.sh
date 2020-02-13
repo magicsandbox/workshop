@@ -63,4 +63,4 @@ while [[ $(kubectl get pods kaniko -o 'jsonpath={..status.conditions[?(@.type=="
 kubectl cp $ctx default/kaniko:/kaniko/project
 kubectl exec -ti kaniko -- /kaniko/executor -f=/kaniko/project/dockerfile -c=/kaniko/project --destination=registry.msb.com/$image
 
-kubectl delete kaniko
+kubectl delete po kaniko
