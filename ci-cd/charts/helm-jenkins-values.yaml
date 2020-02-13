@@ -426,7 +426,7 @@ master:
       kubernetes.io/ingress.class: nginx
       # cert-manager.io/cluster-issuer: letsencrypt-prod
     # Set this path to jenkinsUriPrefix above or use annotations to rewrite path
-    path: "/jenkins"
+    path: "/jenkins/"
     # configures the hostname e.g. jenkins.example.com
     #hostName: jenkins.workshop.msb.com
     #tls:
