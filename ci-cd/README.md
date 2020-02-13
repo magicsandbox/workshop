@@ -10,6 +10,8 @@
 
 To build docker image locally use the next command: `./docker-build.sh --image msbcom/hello:latest --context ./hello-world-app`
 
+To terminate all the resources execute: `./cleanup.sh`
+
 ## Hard way (requires access to DNS hosting provider)
 
 1. Deploy cert-manager and cluster issuer: `kubectl apply --validate=false -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.12/deploy/manifests/00-crds.yaml && helm repo add jetstack https://charts.jetstack.io && helm install --name cert-manager --namespace cert-manager jetstack/cert-manager --set webhook.enabled=false && kubectl apply -f cluster-issuer.yaml && kubectl apply -f regcred.yaml`
