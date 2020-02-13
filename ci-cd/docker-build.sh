@@ -16,8 +16,6 @@ kind: Pod
 metadata:
   name: kaniko
 spec:
-  nodeSelector: 
-    runtime: master
   containers:
   - image: msbcom/kaniko:latest
     name: kaniko
