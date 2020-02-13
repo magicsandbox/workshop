@@ -262,9 +262,6 @@ master:
               </com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger>
             </templates>
           </jenkins.branch.OrganizationChildTriggersProperty>
-          <org.csanchez.jenkins.plugins.kubernetes.KubernetesFolderProperty plugin="kubernetes@1.21.2">
-            <permittedClouds/>
-          </org.csanchez.jenkins.plugins.kubernetes.KubernetesFolderProperty>
           <org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig plugin="pipeline-model-definition@1.5.1">
             <dockerLabel></dockerLabel>
             <registry plugin="docker-commons@1.16"/>
@@ -303,7 +300,7 @@ master:
             <credentialsId>gitea-jenkins</credentialsId>
             <traits>
               <org.jenkinsci.plugin.gitea.BranchDiscoveryTrait>
-                <strategyId>1</strategyId>
+                <strategyId>3</strategyId>
               </org.jenkinsci.plugin.gitea.BranchDiscoveryTrait>
               <org.jenkinsci.plugin.gitea.OriginPullRequestDiscoveryTrait>
                 <strategyId>1</strategyId>

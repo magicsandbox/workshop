@@ -8,17 +8,12 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-    - host: hello-world.workshop.msb.com
-      http:
+    - http:
         paths:
-          - path: /
+          - path: /hello
             backend:
               serviceName: hello-world
               servicePort: http
-  tls:
-  - hosts:
-    - hello-world.workshop.msb.com
-    secretName: hello-world-workshop-msb-com
 ---
 apiVersion: v1
 kind: Service
