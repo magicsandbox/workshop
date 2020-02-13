@@ -123,7 +123,7 @@ spec:
                                 if ! kubectl rollout status deploy/hello-world; then
                                     kubectl rollout undo deploy/hello-world
                                 fi
-                                git remote remove origin && git remote add origin https://$G_USER:$G_PWD@git.workshop.msb.com/msb/hello-world.git
+                                git remote remove origin && git remote add origin http://$G_USER:$G_PWD@git.workshop.msb.com/msb/hello-world.git
                                 git config --global user.name "Release Man" && git config --global user.email "jenkins@msb.com"
                                 git fetch && git checkout master && git add main.go deployment.yaml && git commit -m "[skip ci] `cat next_version` release"
                                 git push origin master

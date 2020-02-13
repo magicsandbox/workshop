@@ -41,3 +41,5 @@ helm install --name gitea charts/gitea
 while [[ $(kubectl get pods -l app=gitea-gitea -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for the gitea" && sleep 2; done
 
 echo "Use http://$external_ip/git to access gitea and http://$external_ip/jenkins to access jenkins"
+
+sed -i'' -e "s@git.workshop.msb.com@$external_ip/git@" ./hello-world-app/Jenkinsfile
