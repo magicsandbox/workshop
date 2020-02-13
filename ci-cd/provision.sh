@@ -13,12 +13,15 @@ while [[ $(kubectl get pods postgresql-postgresql-0 -o 'jsonpath={..status.condi
 while [ -z $external_ip ]; do echo "Waiting for the external IP"; external_ip=$(kubectl get svc nginx-ingress-controller --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}"); [ -z "$external_ip" ] && sleep 2; done; echo "End point ready $external_ip"
 
 # jenkins
+sed -i'' -e "s@<serverUrl>.*@<serverUrl>http://$external_ip/git</serverUrl>@" ./charts/helm-jenkins-values.yaml
+sed -i'' -e "s@<serverUrl>.*@<serverUrl>http://$external_ip/git</serverUrl>@" ./files/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml
+
 kubectl apply -f ./files/jenkins-secrets.yaml
+
 kubectl create secret generic j-cred --from-file=./files/credentials.xml
 helm install --name jenkins stable/jenkins -f charts/helm-jenkins-values.yaml
 while [[ $(kubectl get pods -l app.kubernetes.io/name=jenkins -o 'jsonpath={..status.conditions[?(@.type=="Initialized")].status}') != "True" ]]; do echo "waiting for the jenkins" && sleep 2; done
 jenkins_pod=$(kubectl get pod -l app.kubernetes.io/name=jenkins -o jsonpath="{.items[0].metadata.name}")
-sed -i'' -e "s@<serverUrl>.*@<serverUrl>http://$external_ip/git</serverUrl>@" ./files/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml
 kubectl cp ./files/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml default/$jenkins_pod:/var/jenkins_home/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml
 kubectl exec $jenkins_pod -- chown -R root:root /var/jenkins_home/org.jenkinsci.plugin.gitea.servers.GiteaServers.xml
 echo "Jenkins has been initialized, waiting for readiness"
