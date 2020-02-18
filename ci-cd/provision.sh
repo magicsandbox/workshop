@@ -65,7 +65,8 @@ else
     --set sourceControl.gitea.clientID=e04bb11b-8e4a-415f-9527-995209eb45e2 \
     --set sourceControl.gitea.clientSecretValue="95IN8jgOOc1KHRvRqjyrlP93XS-Hw47_8yIXN9sn9qo=" \
     --set server.adminUser=msb-admin \
-    --set server.kubernetes.pipelineServiceAccount=build-robot
+    --set server.kubernetes.pipelineServiceAccount=build-robot \
+    --set server.env.DRONE_USER_CREATE="username:msb-admin\,machine:false\,admin:true\,token:55f24eb3d61ef6ac5e83d550178638dc"
   kubectl apply -f ./charts/drone-ingress.yaml
   while [[ $(kubectl get pods -l app=drone -o 'jsonpath={..status.conditions[?(@.type=="Ready")].status}') != "True" ]]; do echo "waiting for the drone" && sleep 2; done
 
@@ -74,3 +75,7 @@ else
 
   echo "Use http://$external_ip/git to access gitea and http://$external_ip to access drone ci"
 fi
+
+# helpers
+# kubectl get secret regcred -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
+# kubectl get secrets $(kubectl get serviceaccounts build-robot -o jsonpath="{.secrets[?(@)].name}") --template={{.data.token}} | base64 -d

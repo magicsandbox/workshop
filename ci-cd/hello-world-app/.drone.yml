@@ -1,0 +1,26 @@
+kind: pipeline
+name: default
+steps:
+- name: test
+  image: golang:1.10-alpine
+  commands:
+  - "go test"
+
+- name: publish
+  image: msbcom/kaniko:latest
+  commands:
+  - echo "$PLUGIN_DOCKERCONFIG" > /kaniko/.docker/config.json
+  - "/kaniko/executor -f `pwd`/dockerfile -c `pwd` --destination=registry.msb.com/msb/hello-world:1.0.0"
+  settings:
+    dockerconfig:
+      from_secret: dockerconfig
+
+- name: deliver
+  image: sinlead/drone-kubectl
+  settings:
+    kubernetes_server:
+      from_secret: k8s_server
+    kubernetes_token:
+      from_secret: k8s_token
+  commands:
+  - kubectl apply -f deployment.yaml
