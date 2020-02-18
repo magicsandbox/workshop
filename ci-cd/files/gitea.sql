@@ -3030,6 +3030,7 @@ COPY public.notification (id, user_id, repo_id, status, source, issue_id, commit
 --
 
 COPY public.oauth2_application (id, uid, name, client_id, client_secret, redirect_uris, created_unix, updated_unix) FROM stdin;
+1	1	drone	e04bb11b-8e4a-415f-9527-995209eb45e2	$2a$10$Gw3uumHwcpo.89oHPI8l/.EH6ZaYh4iMmx/Sy5iUeb8p6MVxzH1Xe	["http://EXTERNAL_IP/login"]	1581931732	1581931732
 \.
 
 
